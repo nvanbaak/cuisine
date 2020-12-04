@@ -17,7 +17,9 @@ var config = {
 }
 
 function preload () {
-
+    this.load("platform","./assets/platform.png");
+    this.load("sky","./assets/sky.png");
+    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 }
 
 
