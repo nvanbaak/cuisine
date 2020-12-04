@@ -21,6 +21,8 @@ var platforms;
 var cursors;
 let player;
 
+var game = new Phaser.Game(config);
+
 function preload () {
     this.load("platform","./assets/platform.png");
     this.load("sky","./assets/sky.png");
