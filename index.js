@@ -32,7 +32,7 @@ function preload () {
 function create ()
 {
     //  A simple background for our game
-    this.add.image(400, 300, 'sky').setScale(3).refreshBody();
+    this.add.image(400, 300, 'sky').setScale(3);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
