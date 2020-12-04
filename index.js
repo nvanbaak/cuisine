@@ -16,6 +16,8 @@ var config = {
     }
 }
 
+let player;
+
 function preload () {
     this.load("platform","./assets/platform.png");
     this.load("sky","./assets/sky.png");
@@ -24,6 +26,9 @@ function preload () {
 
 
 function create () {
+
+    player = this.physics.add.sprite(800,450);
+
 
 }
 
