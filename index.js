@@ -5,7 +5,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 400 },
+            gravity: { y: 300 },
             debug: false
         }
     },
@@ -14,20 +14,61 @@ var config = {
         create: create,
         update: update
     }
-}
+};
 
-function preload () {
-    this.load("platform","./assets/platform.png");
-    this.load("sky","./assets/sky.png");
+var gameOver;
+var platforms;
+var cursors;
+
+var game = new Phaser.Game(config);
+
+function preload ()
+{
+    this.load.image('sky', 'assets/sky.png');
+    this.load.image('ground', 'assets/platform.png');
+    this.load.image('star', 'assets/star.png');
+    this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 }
 
+function create ()
+{
+    //  A simple background for our game
+    this.add.image(400, 300, 'sky').setScale(3).refreshBody();
 
-function create () {
+    //  Input Events
+    cursors = this.input.keyboard.createCursorKeys();
 
 }
 
+function update ()
+{
+    if (gameOver)
+    {
+        return;
+    }
 
-function update () {
+    // if (cursors.left.isDown)
+    // {
+    //     player.setVelocityX(-160);
 
+    //     player.anims.play('left', true);
+    // }
+    // else if (cursors.right.isDown)
+    // {
+    //     player.setVelocityX(160);
+
+    //     player.anims.play('right', true);
+    // }
+    // else
+    // {
+    //     player.setVelocityX(0);
+
+    //     player.anims.play('turn');
+    // }
+
+    // if (cursors.up.isDown && player.body.touching.down)
+    // {
+    //     player.setVelocityY(-330);
+    // }
 }
