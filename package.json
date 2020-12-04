@@ -1,0 +1,23 @@
+{
+  "name": "cuisine",
+  "version": "1.0.0",
+  "description": "A game about HIGH CUISINE and VIOLENCE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nvanbaak/cuisine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nvanbaak/cuisine/issues"
+  },
+  "homepage": "https://github.com/nvanbaak/cuisine#readme",
+  "dependencies": {
+    "phaser": "^3.24.1",
+    "webpack": "^5.10.0"
+  }
+}
