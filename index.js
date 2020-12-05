@@ -5,7 +5,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            gravity: { y: 500 },
             debug: false
         }
     },
@@ -16,9 +16,9 @@ var config = {
     }
 };
 
-var gameOver;
-var platforms;
-var cursors;
+let gameOver;
+let platforms;
+let cursors;
 let player;
 
 var game = new Phaser.Game(config);
@@ -26,18 +26,21 @@ var game = new Phaser.Game(config);
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.image('cuisine-man', 'assets/cuisine-man.png');
 }
 
 function create ()
 {
-    //  A simple background for our game
-    this.add.image(400, 300, 'sky').setScale(3);
+    //  add game background
+    this.add.image(0, 0, 'sky').setScale(3).setOrigin(0,0);
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
+    
+    // Add player character
+    player = this.physics.add.sprite(800,450,"cuisine-man");
+    player.setCollideWorldBounds(true);
 
-    player = this.physics.add.sprite(800,450);
 
 }
 
@@ -51,17 +54,17 @@ function update ()
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
-        player.anims.play('left', true);
+        // player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
-        player.anims.play('right', true);
+        // player.anims.play('right', true);
     }
     else
     {
         player.setVelocityX(0);
-        player.anims.play('turn');
+        // player.anims.play('turn');
     }
 
     if (cursors.up.isDown && player.body.touching.down)
