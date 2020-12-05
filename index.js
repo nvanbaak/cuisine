@@ -97,12 +97,18 @@ class KnifeheadEnemy extends Enemy {
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
+    this.load.image("apple","assets/apple.png");
+    this.load.image("egg","assets/egg.png");
+    this.load.image("fish","assets/fish.png");
+    this.load.image("lemon","assets/lemon.png");
+    this.load.image("lettuce","assets/lettuce.png");
+    this.load.image("meat","assets/meat.png");
+    this.load.image("plate","assets/plate.png");
     this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
     this.load.spritesheet('knifehead', 'assets/knifehead.png', {frameWidth: 32, frameHeight: 48});
 }
 
-function create ()
-{
+function create () {
     // add game background and ground
     this.add.image(0, 0, 'sky').setScale(3).setOrigin(0,0);
 
@@ -152,6 +158,7 @@ function create ()
         frames: this.anims.generateFrameNumbers('knifehead', {frame: 4}),
         frameRate: 20,
     });
+
 }
 
 function update ()
