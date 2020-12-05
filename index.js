@@ -55,7 +55,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         else if (this.body.touching.down)
         {
-            this.velocityX = this.velocityX * 0.9;
+            this.velocityX = this.velocityX * 0.8;
             if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
             this.setVelocityX(this.velocityX);
             player.anims.play('stand');
@@ -71,9 +71,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
-<<<<<<< HEAD
-    this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', { frameWidth: 36, frameHeight: 48 });
-=======
     this.load.image("apple","assets/apple.png");
     this.load.image("egg","assets/egg.png");
     this.load.image("fish","assets/fish.png");
@@ -82,7 +79,6 @@ function preload () {
     this.load.image("meat","assets/meat.png");
     this.load.image("plate","assets/plate.png");
     this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
->>>>>>> main
 }
 
 function create () {
@@ -96,7 +92,7 @@ function create () {
     cursors = this.input.keyboard.createCursorKeys();
     
     // Add player character
-    player = new Player(this, 800, 450);
+    player = new Player(this, 800, 800);
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
 
