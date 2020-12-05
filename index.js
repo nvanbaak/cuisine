@@ -20,6 +20,7 @@ let gameOver;
 let platforms;
 let cursors;
 let player;
+let knifeheads;
 
 var game = new Phaser.Game(config);
 
@@ -42,29 +43,54 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         {
             this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
             this.setVelocityX(this.velocityX);
-            player.anims.play('walk', true);
-            player.setFlip(true,false);
+            this.anims.play('walk', true);
+            this.setFlip(true,false);
 
         }
         else if (cursors.right.isDown)
         {
             this.velocityX = this.velocityX > 160 ? this.velocityX : this.velocityX + 10;
             this.setVelocityX(this.velocityX);
-            player.anims.play('walk', true);
-            player.setFlip(false,false);
+            this.anims.play('walk', true);
+            this.setFlip(false,false);
         }
         else if (this.body.touching.down)
         {
             this.velocityX = this.velocityX * 0.8;
             if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
             this.setVelocityX(this.velocityX);
-            player.anims.play('stand');
+            this.anims.play('stand');
         }
     
         if (cursors.up.isDown && this.body.touching.down)
         {
             this.setVelocityY(-330);
         }
+    }
+}
+
+class Enemy extends Phaser.Physics.Arcade.Sprite {
+    velocityX = 0;
+    velocityY = 0;
+
+    constructor(scene, x, y)
+    {
+        super(scene, x, y);
+        scene.add.existing(this);
+        this.setPosition(x, y);
+    }
+}
+
+class KnifeheadEnemy extends Enemy {
+    constructor(scene, x, y)
+    {
+        super(scene, x, y)
+        this.setTexture('knifehead');
+    }
+
+    update ()
+    {
+        this.anims.play('knifehead-walk', true);
     }
 }
 
@@ -79,6 +105,7 @@ function preload () {
     this.load.image("meat","assets/meat.png");
     this.load.image("plate","assets/plate.png");
     this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
+    this.load.spritesheet('knifehead', 'assets/knifehead.png', {frameWidth: 32, frameHeight: 48});
 }
 
 function create () {
@@ -88,6 +115,8 @@ function create () {
     platforms = this.physics.add.staticGroup();
     platforms.create(400, 950, 'platform').setScale(6).refreshBody();
 
+    knifeheads = this.physics.add.group(config={classType: KnifeheadEnemy});
+
     // createCursorKeys sets up up, left, right, and down
     cursors = this.input.keyboard.createCursorKeys();
     
@@ -96,8 +125,13 @@ function create () {
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
 
+    var enemy = knifeheads.create(400, 400, 'knifehead');
+    enemy.setCollideWorldBounds(true);
+
     // Set up collision
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(knifeheads, platforms);
+    this.physics.add.collider(knifeheads, player);
 
     this.anims.create({
         key: 'stand',
@@ -111,6 +145,20 @@ function create () {
         frameRate: 20,
         repeat: -1
     });
+
+    this.anims.create({
+        key: 'knifehead-walk',
+        frames: this.anims.generateFrameNumbers('knifehead', {start: 0, end: 3}),
+        frameRate: 8,
+        repeat: -1,
+    });
+
+    this.anims.create({
+        key: 'knifehead-stand',
+        frames: this.anims.generateFrameNumbers('knifehead', {frame: 4}),
+        frameRate: 20,
+    });
+
 }
 
 function update ()
@@ -118,4 +166,5 @@ function update ()
     if (gameOver) { return; }
 
     player.update();
+    Array.prototype.forEach(enemy => enemy.update(), knifeheads);
 }
