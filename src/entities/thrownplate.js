@@ -1,4 +1,5 @@
 export default class ThrownPlate extends Phaser.Physics.Arcade.Sprite {
+    damage = 10;
 
     constructor(scene, x, y, angle)
     {
@@ -12,4 +13,8 @@ export default class ThrownPlate extends Phaser.Physics.Arcade.Sprite {
         this.setTexture('thrownplate');
     }
 
+    static hitEnemy (enemy, plate)
+    {
+        enemy.getHit(plate);
+    }
 }

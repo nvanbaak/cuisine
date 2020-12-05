@@ -1,4 +1,5 @@
 import Player from "./src/characters/player.js";
+import Enemy from "./src/characters/enemy.js";
 import KnifeheadEnemy from "./src/characters/knifehead.js";
 import ThrownPlate from "./src/entities/thrownplate.js";
 
@@ -49,6 +50,8 @@ function preload () {
 }
 
 function create () {
+    this.updateArray = updateArray;
+
     // add game background and ground
     this.add.image(0, 0, 'sky').setScale(3).setOrigin(0,0);
 
@@ -107,10 +110,8 @@ function create () {
     // Set up collision
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(knifeheads, platforms);
-    this.physics.add.overlap(player, knifeheads, KnifeheadEnemy.collide, Player.checkIframes);
-    this.physics.add.collider(knifeheads, thrownPlates, () => {
-
-    })
+    this.physics.add.overlap(player, knifeheads, Enemy.hitPlayer, Player.checkIframes);
+    this.physics.add.overlap(knifeheads, thrownPlates, ThrownPlate.hitEnemy, Enemy.checkIframes);
 
     // Define animations
     this.anims.create({
@@ -158,7 +159,7 @@ function update ()
     if (gameOver) { return; }
 
     player.update(cursors, fireReady === 0);
-    updateArray.forEach(enemy => enemy.update());
+    updateArray.forEach(entity => entity.update());
 }
 
 function throwPlate() {
