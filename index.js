@@ -26,7 +26,7 @@ var game = new Phaser.Game(config);
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
-    this.load.image('cuisine-man', 'assets/cuisine-man.png');
+    this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', { frameWidth: 36, frameHeight: 48 });
 }
 
 function create ()
@@ -51,10 +51,7 @@ function create ()
 
 function update ()
 {
-    if (gameOver)
-    {
-        return;
-    }
+    if (gameOver) { return; }
 
     if (cursors.left.isDown)
     {
