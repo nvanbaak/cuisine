@@ -1,3 +1,6 @@
+import Player from "./src/characters/player.js";
+import KnifeheadEnemy from "./src/characters/knifehead.js";
+
 var config = {
     type: Phaser.AUTO,
     width: 1600,
@@ -21,78 +24,9 @@ let platforms;
 let cursors;
 let player;
 let knifeheads;
+let updateArray = [];
 
 var game = new Phaser.Game(config);
-
-class Player extends Phaser.Physics.Arcade.Sprite {
-    velocityX = 0;
-    velocityY = 0;
-
-    constructor (scene, x, y)
-    {
-        super(scene, x, y);
-        scene.add.existing(this);
-        this.setTexture('cuisine-man');
-        this.setPosition(x, y);
-    }
-
-    update ()
-    {
-        super.update();
-        if (cursors.left.isDown)
-        {
-            this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
-            this.setVelocityX(this.velocityX);
-            this.anims.play('walk', true);
-            this.setFlip(true,false);
-
-        }
-        else if (cursors.right.isDown)
-        {
-            this.velocityX = this.velocityX > 160 ? this.velocityX : this.velocityX + 10;
-            this.setVelocityX(this.velocityX);
-            this.anims.play('walk', true);
-            this.setFlip(false,false);
-        }
-        else if (this.body.touching.down)
-        {
-            this.velocityX = this.velocityX * 0.8;
-            if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
-            this.setVelocityX(this.velocityX);
-            this.anims.play('stand');
-        }
-    
-        if (cursors.up.isDown && this.body.touching.down)
-        {
-            this.setVelocityY(-330);
-        }
-    }
-}
-
-class Enemy extends Phaser.Physics.Arcade.Sprite {
-    velocityX = 0;
-    velocityY = 0;
-
-    constructor(scene, x, y)
-    {
-        super(scene, x, y);
-        scene.add.existing(this);
-        this.setPosition(x, y);
-    }
-}
-
-class KnifeheadEnemy extends Enemy {
-    constructor(scene, x, y)
-    {
-        super(scene, x, y)
-        this.setTexture('knifehead');
-    }
-
-    update ()
-    {
-        this.anims.play('knifehead-walk', true);
-    }
-}
 
 function preload () {
     this.load.image("platform","./assets/platform.png");
@@ -127,12 +61,15 @@ function create () {
 
     var enemy = knifeheads.create(400, 400, 'knifehead');
     enemy.setCollideWorldBounds(true);
+    updateArray.push(enemy);
 
     // Set up collision
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(knifeheads, platforms);
     this.physics.add.collider(knifeheads, player);
 
+
+    // Define animations
     this.anims.create({
         key: 'stand',
         frames: this.anims.generateFrameNumbers('cuisine-man', {frame: 0}),
@@ -165,6 +102,6 @@ function update ()
 {
     if (gameOver) { return; }
 
-    player.update();
-    Array.prototype.forEach(enemy => enemy.update(), knifeheads);
+    player.update(cursors);
+    updateArray.forEach(enemy => enemy.update(), knifeheads);
 }
