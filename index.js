@@ -2,6 +2,7 @@ import Player from "./src/characters/player.js";
 import Enemy from "./src/characters/enemy.js";
 import KnifeheadEnemy from "./src/characters/knifehead.js";
 import ThrownPlate from "./src/entities/thrownplate.js";
+import Item from "./src/entities/item.js";
 
 var config = {
     type: Phaser.AUTO,
@@ -39,6 +40,7 @@ let inventory = {
     meat: 0,
     plate: 0
 }
+const itemTypes = ["apple","egg","fish","lemon","lettuce","lettuce","meat","plate"]
 
 var game = new Phaser.Game(config);
 
@@ -70,8 +72,7 @@ function create () {
 
     knifeheads = this.physics.add.group(config={classType: KnifeheadEnemy});
     thrownPlates = this.physics.add.group(config={classType: ThrownPlate});
-    items = this.physics.add.group();
-
+    items = this.physics.add.group(config = {classType: Item});
 
     // createCursorKeys sets up up, left, right, and down
     cursors = this.input.keyboard.createCursorKeys();
@@ -106,15 +107,15 @@ function create () {
     this.player = player;
 
     // Add three enemies
-    var enemy = knifeheads.create(100, 400, 'knifehead');
+    var enemy = knifeheads.create(100, 400);
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
-    enemy = knifeheads.create(150, 400, 'knifehead');
+    enemy = knifeheads.create(150, 400);
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
-    enemy = knifeheads.create(200, 400, 'knifehead');
+    enemy = knifeheads.create(200, 400);
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
@@ -123,6 +124,7 @@ function create () {
     this.physics.add.collider(knifeheads, platforms);
     this.physics.add.overlap(player, knifeheads, Enemy.hitPlayer, Player.checkIframes);
     this.physics.add.overlap(knifeheads, thrownPlates, ThrownPlate.hitEnemy, Enemy.checkIframes);
+    this.physics.add.collider(items, platforms);
 
     // Define animations
     this.anims.create({
@@ -175,8 +177,15 @@ function update ()
     updateArray.forEach(entity => entity.update());
 
     // Spawn items at random
-    if (Math.random() < 0.0001) {
+    if (Math.random() < 0.01) {
 
+        // Get random item category
+
+        let newItem = items.create(
+            Phaser.Math.Between(0,1568), // anywhere in the X range
+            0,                           // top of the screen
+            itemTypes[Phaser.Math.Between(0, itemTypes.length)] // item cat
+        )
     }
 }
 
