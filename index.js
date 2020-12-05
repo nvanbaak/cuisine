@@ -25,6 +25,7 @@ let gameOver;
 let platforms;
 let cursors;
 let player;
+let items;
 let knifeheads;
 let thrownPlates;
 let updateArray = [];
@@ -69,6 +70,7 @@ function create () {
 
     knifeheads = this.physics.add.group(config={classType: KnifeheadEnemy});
     thrownPlates = this.physics.add.group(config={classType: ThrownPlate});
+    items = this.physics.add.group();
 
 
     // createCursorKeys sets up up, left, right, and down
@@ -165,10 +167,17 @@ function create () {
 
 function update ()
 {
+    // Game over
     if (gameOver) { return; }
 
+    // Update all entities
     player.update(cursors, fireReady === 0);
     updateArray.forEach(entity => entity.update());
+
+    // Spawn items at random
+    if (Math.random() < 0.0001) {
+
+    }
 }
 
 function throwPlate() {
