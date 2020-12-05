@@ -125,6 +125,10 @@ function create () {
     this.physics.add.overlap(player, knifeheads, Enemy.hitPlayer, Player.checkIframes);
     this.physics.add.overlap(knifeheads, thrownPlates, ThrownPlate.hitEnemy, Enemy.checkIframes);
     this.physics.add.collider(items, platforms);
+    this.physics.add.overlap(player, items, (player, items) => {
+        items.pickup()
+    });
+
 
     // Define animations
     this.anims.create({
@@ -184,7 +188,8 @@ function update ()
         items.create(
             Phaser.Math.Between(0,1568), // anywhere in the X range
             0,                           // top of the screen
-            itemTypes[Phaser.Math.Between(0, itemTypes.length-1)] // item cat
+            itemTypes[Phaser.Math.Between(0, itemTypes.length-1)], // item category
+            inventory // pointer to inventory object
         )
     }
 }
