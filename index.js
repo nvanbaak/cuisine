@@ -20,6 +20,7 @@ let gameOver;
 let platforms;
 let cursors;
 let player;
+let knifeheads;
 
 var game = new Phaser.Game(config);
 
@@ -68,10 +69,36 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 }
 
+class Enemy extends Phaser.Physics.Arcade.Sprite {
+    velocityX = 0;
+    velocityY = 0;
+
+    constructor(scene, x, y)
+    {
+        super(scene, x, y);
+        scene.add.existing(this);
+        this.setPosition(x, y);
+    }
+}
+
+class KnifeheadEnemy extends Enemy {
+    constructor(scene, x, y)
+    {
+        super(scene, x, y)
+        this.setTexture('knifehead');
+    }
+
+    update ()
+    {
+        this.anims.play('knifehead-walk', true);
+    }
+}
+
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
     this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
+    this.load.spritesheet('knifehead', 'assets/knifehead.png', {frameWidth: 32, frameHeight: 48});
 }
 
 function create ()
@@ -82,6 +109,8 @@ function create ()
     platforms = this.physics.add.staticGroup();
     platforms.create(400, 950, 'platform').setScale(6).refreshBody();
 
+    knifeheads = this.physics.add.group(config={classType: KnifeheadEnemy});
+
     // createCursorKeys sets up up, left, right, and down
     cursors = this.input.keyboard.createCursorKeys();
     
@@ -90,8 +119,13 @@ function create ()
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
 
+    var enemy = knifeheads.create(400, 400, 'knifehead');
+    enemy.setCollideWorldBounds(true);
+
     // Set up collision
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(knifeheads, platforms);
+    this.physics.add.collider(knifeheads, player);
 
     this.anims.create({
         key: 'stand',
@@ -106,6 +140,18 @@ function create ()
         repeat: -1
     });
 
+    this.anims.create({
+        key: 'knifehead-walk',
+        frames: this.anims.generateFrameNumbers('knifehead', {start: 0, end: 3}),
+        frameRate: 8,
+        repeat: -1,
+    });
+
+    this.anims.create({
+        key: 'knifehead-stand',
+        frames: this.anims.generateFrameNumbers('knifehead', {frame: 4}),
+        frameRate: 20,
+    });
 }
 
 function update ()
@@ -116,4 +162,5 @@ function update ()
     }
 
     player.update();
+    Array.prototype.forEach(enemy => enemy.update(), knifeheads);
 }
