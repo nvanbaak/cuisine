@@ -23,6 +23,48 @@ let player;
 
 var game = new Phaser.Game(config);
 
+class Player extends Phaser.Physics.Arcade.Sprite {
+    velocityX = 0;
+    velocityY = 0;
+
+    constructor (scene, x, y)
+    {
+        super(scene, x, y);
+        scene.add.existing(this);
+        this.setTexture('cuisine-man');
+        this.setPosition(x, y);
+    }
+
+    update ()
+    {
+        super.update();
+        if (cursors.left.isDown)
+        {
+            this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
+            this.setVelocityX(this.velocityX);
+            // player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            this.velocityX = this.velocityX > 160 ? this.velocityX : this.velocityX + 10;
+            this.setVelocityX(this.velocityX);
+            // player.anims.play('right', true);
+        }
+        else if (this.body.touching.down)
+        {
+            this.velocityX = this.velocityX * 0.9;
+            if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
+            this.setVelocityX(this.velocityX);
+            // player.anims.play('turn');
+        }
+    
+        if (cursors.up.isDown && this.body.touching.down)
+        {
+            this.setVelocityY(-330);
+        }
+    }
+}
+
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
@@ -41,7 +83,8 @@ function create ()
     cursors = this.input.keyboard.createCursorKeys();
     
     // Add player character
-    player = this.physics.add.sprite(800,450,"cuisine-man");
+    player = new Player(this, 800, 450);
+    this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
 
     // Set up collision
@@ -56,24 +99,5 @@ function update ()
         return;
     }
 
-    if (cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-        // player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown)
-    {
-        player.setVelocityX(160);
-        // player.anims.play('right', true);
-    }
-    else
-    {
-        player.setVelocityX(0);
-        // player.anims.play('turn');
-    }
-
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.setVelocityY(-330);
-    }
+    player.update();
 }
