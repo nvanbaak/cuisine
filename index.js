@@ -42,23 +42,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         {
             this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
             this.setVelocityX(this.velocityX);
-            player.anims.play('walk', true);
-            player.setFlip(true,false);
+            this.anims.play('walk', true);
+            this.setFlip(true,false);
 
         }
         else if (cursors.right.isDown)
         {
             this.velocityX = this.velocityX > 160 ? this.velocityX : this.velocityX + 10;
             this.setVelocityX(this.velocityX);
-            player.anims.play('walk', true);
-            player.setFlip(false,false);
+            this.anims.play('walk', true);
+            this.setFlip(false,false);
         }
         else if (this.body.touching.down)
         {
             this.velocityX = this.velocityX * 0.9;
             if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
             this.setVelocityX(this.velocityX);
-            player.anims.play('stand');
+            this.anims.play('stand');
         }
     
         if (cursors.up.isDown && this.body.touching.down)
