@@ -15,7 +15,7 @@ var config = {
     scene: {
         preload: preload,
         create: create,
-        update: update
+        update: update,
     }
 };
 
@@ -58,21 +58,29 @@ function create () {
     player = new Player(this, 800, 800);
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
+    this.player = player;
 
-    var enemy = knifeheads.create(400, 400, 'knifehead');
+    var enemy = knifeheads.create(100, 400, 'knifehead');
+    enemy.setCollideWorldBounds(true);
+    updateArray.push(enemy);
+
+    enemy = knifeheads.create(150, 400, 'knifehead');
+    enemy.setCollideWorldBounds(true);
+    updateArray.push(enemy);
+
+    enemy = knifeheads.create(200, 400, 'knifehead');
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
     // Set up collision
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(knifeheads, platforms);
-    this.physics.add.collider(knifeheads, player);
-
+    this.physics.add.overlap(player, knifeheads, KnifeheadEnemy.collide, Player.checkIframes);
 
     // Define animations
     this.anims.create({
         key: 'stand',
-        frames: this.anims.generateFrameNumbers('cuisine-man', {frame: 0}),
+        frames: [ { key: 'cuisine-man', frame: 0 } ],
         frameRate: 20
     });
 
@@ -92,7 +100,7 @@ function create () {
 
     this.anims.create({
         key: 'knifehead-stand',
-        frames: this.anims.generateFrameNumbers('knifehead', {frame: 4}),
+        frames: [ { key: 'knifehead', frame: 4 } ],
         frameRate: 20,
     });
 

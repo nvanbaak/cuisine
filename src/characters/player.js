@@ -1,6 +1,12 @@
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     velocityX = 0;
     velocityY = 0;
+    iframes = 0;
+
+    static checkIframes(player, enemy)
+    {
+        return player.iframes <= 0;
+    }
 
     constructor (scene, x, y)
     {
@@ -13,6 +19,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     update (cursors)
     {
         super.update();
+
+        if (this.iframes > 0)
+        {
+            this.setTint(0xff0000);
+            this.iframes -= 1;
+        }
+        else
+        {
+            this.setTint(0xffffff);
+        }
+
         if (cursors.left.isDown)
         {
             this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
