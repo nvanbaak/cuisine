@@ -31,16 +31,21 @@ function preload () {
 
 function create ()
 {
-    //  add game background
+    // add game background and ground
     this.add.image(0, 0, 'sky').setScale(3).setOrigin(0,0);
 
-    //  Input Events
+    platforms = this.physics.add.staticGroup();
+    platforms.create(400, 950, 'platform').setScale(6).refreshBody();
+
+    // createCursorKeys sets up up, left, right, and down
     cursors = this.input.keyboard.createCursorKeys();
     
     // Add player character
     player = this.physics.add.sprite(800,450,"cuisine-man");
     player.setCollideWorldBounds(true);
 
+    // Set up collision
+    this.physics.add.collider(player, platforms);
 
 }
 
