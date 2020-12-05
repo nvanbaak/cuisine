@@ -29,6 +29,15 @@ let knifeheads;
 let thrownPlates;
 let updateArray = [];
 let fireReady = 0;
+let inventory = {
+    apple: 0,
+    egg: 0,
+    fish: 0,
+    lemon: 0,
+    lettuce: 0,
+    meat: 0,
+    plate: 0
+}
 
 var game = new Phaser.Game(config);
 
@@ -56,7 +65,7 @@ function create () {
     this.add.image(0, 0, 'sky').setScale(3).setOrigin(0,0);
 
     platforms = this.physics.add.staticGroup();
-    platforms.create(400, 950, 'platform').setScale(6).refreshBody();
+    platforms.create(400, 750, 'platform').setScale(6).refreshBody();
 
     knifeheads = this.physics.add.group(config={classType: KnifeheadEnemy});
     thrownPlates = this.physics.add.group(config={classType: ThrownPlate});
@@ -89,7 +98,7 @@ function create () {
 
 
     // Add player character
-    player = new Player(this, 800, 800);
+    player = new Player(this, 800, 600);
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
     this.player = player;
