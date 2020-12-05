@@ -145,6 +145,12 @@ function create () {
         frameRate: 20,
     });
 
+    this.anims.create({
+        key: 'knifehead-hurt',
+        frames: [ { key: 'knifehead', frame: 5 } ],
+        frameRate: 20,
+    });
+
 }
 
 function update ()
