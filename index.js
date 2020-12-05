@@ -40,7 +40,7 @@ let inventory = {
     meat: 0,
     plate: 0
 }
-const itemTypes = ["apple","egg","fish","lemon","lettuce","lettuce","meat","plate"]
+const itemTypes = ["apple","egg","fish","lemon","lettuce","meat","plate"]
 
 var game = new Phaser.Game(config);
 
@@ -181,10 +181,10 @@ function update ()
 
         // Get random item category
 
-        let newItem = items.create(
+        items.create(
             Phaser.Math.Between(0,1568), // anywhere in the X range
             0,                           // top of the screen
-            itemTypes[Phaser.Math.Between(0, itemTypes.length)] // item cat
+            itemTypes[Phaser.Math.Between(0, itemTypes.length-1)] // item cat
         )
     }
 }
