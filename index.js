@@ -42,20 +42,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         {
             this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
             this.setVelocityX(this.velocityX);
-            // player.anims.play('left', true);
+            player.anims.play('walk', true);
+            player.setFlip(true,false);
+
         }
         else if (cursors.right.isDown)
         {
             this.velocityX = this.velocityX > 160 ? this.velocityX : this.velocityX + 10;
             this.setVelocityX(this.velocityX);
-            // player.anims.play('right', true);
+            player.anims.play('walk', true);
+            player.setFlip(false,false);
         }
         else if (this.body.touching.down)
         {
             this.velocityX = this.velocityX * 0.9;
             if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
             this.setVelocityX(this.velocityX);
-            // player.anims.play('turn');
+            player.anims.play('stand');
         }
     
         if (cursors.up.isDown && this.body.touching.down)
@@ -68,7 +71,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 function preload () {
     this.load.image("platform","./assets/platform.png");
     this.load.image("sky","./assets/sky.png");
-    this.load.image('cuisine-man', 'assets/cuisine-man.png');
+    this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
 }
 
 function create ()
@@ -89,6 +92,19 @@ function create ()
 
     // Set up collision
     this.physics.add.collider(player, platforms);
+
+    this.anims.create({
+        key: 'stand',
+        frames: this.anims.generateFrameNumbers('cuisine-man', {frame: 0}),
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'walk',
+        frames: this.anims.generateFrameNumbers('cuisine-man', {start: 0, end: 7}),
+        frameRate: 20,
+        repeat: -1
+    });
 
 }
 
