@@ -60,7 +60,15 @@ function create () {
     player.setCollideWorldBounds(true);
     this.player = player;
 
-    var enemy = knifeheads.create(400, 400, 'knifehead');
+    var enemy = knifeheads.create(100, 400, 'knifehead');
+    enemy.setCollideWorldBounds(true);
+    updateArray.push(enemy);
+
+    enemy = knifeheads.create(150, 400, 'knifehead');
+    enemy.setCollideWorldBounds(true);
+    updateArray.push(enemy);
+
+    enemy = knifeheads.create(200, 400, 'knifehead');
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
