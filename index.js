@@ -66,23 +66,7 @@ function create () {
     addEventListener("click", (event) => {
 
         if (fireReady) {
-   
-            // Calculate angle from player
-            let deltaY = mouse.y - player.y;
-            let deltaX = mouse.x - player.x;
-         
-            console.log("Firing...");
-            console.log(`deltaX: ${deltaX}`);
-            console.log(`deltay: ${deltaY}`);
-
-            let fireAngle = Math.atan(deltaY / deltaX);
-
-            console.log(`atan (in radians?): ${fireAngle}`);
-
-            let plate = thrownPlates.create(player.x, player.y, fireAngle);
-            plate.fire();
-            updateArray.push(plate);
-
+            throwPlate();
         }
 
     });
@@ -148,14 +132,25 @@ function update ()
     updateArray.forEach(enemy => enemy.update());
 
     if (cursors.down.isDown) {
-        // Calculate angle from player
-        let deltaY = mouse.y - player.y;
-        let deltaX = mouse.x - player.x;
-
-        let fireAngle = Math.atan(deltaY / deltaX);
-
-        let plate = thrownPlates.create(player.x, player.y, fireAngle);
-        plate.fire();
-        updateArray.push(plate);
+        throwPlate();
     }
+}
+
+function throwPlate() {
+
+    // Calculate angle from player
+    let deltaY = mouse.y - player.y;
+    let deltaX = mouse.x - player.x;
+    
+    let fireAngle = Math.atan2(deltaY , deltaX);
+    
+    let plate = thrownPlates.create(player.x, player.y, fireAngle);
+    
+    if (deltaX < 0) {
+        plate.setFlip(false,true)
+    }
+
+    plate.body.setAllowGravity(false);
+    plate.setVelocityX(Math.cos(fireAngle) * 300);
+    plate.setVelocityY(Math.sin(fireAngle) * 300);
 }
