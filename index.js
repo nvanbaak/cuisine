@@ -27,7 +27,7 @@ let player;
 let knifeheads;
 let thrownPlates;
 let updateArray = [];
-let fireReady = true;
+let fireReady = 0;
 
 var game = new Phaser.Game(config);
 
@@ -65,8 +65,21 @@ function create () {
     // Add firing behavior
     addEventListener("click", (event) => {
 
-        if (fireReady) {
-            throwPlate();
+        if (fireReady === 0) {
+            fireReady = 7;
+            player.anims.play('throw');
+            
+            let throwTime = setInterval(() => {
+                fireReady--;
+
+                if (fireReady === 3) {
+                    throwPlate();
+                }
+
+                if (fireReady <= 0) {
+                    clearInterval(throwTime);
+                }
+            }, 30);
         }
 
     });
@@ -78,6 +91,7 @@ function create () {
     player.setCollideWorldBounds(true);
     this.player = player;
 
+    // Add three enemies
     var enemy = knifeheads.create(100, 400, 'knifehead');
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
@@ -94,6 +108,9 @@ function create () {
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(knifeheads, platforms);
     this.physics.add.overlap(player, knifeheads, KnifeheadEnemy.collide, Player.checkIframes);
+    this.physics.add.collider(knifeheads, thrownPlates, () => {
+
+    })
 
     // Define animations
     this.anims.create({
@@ -108,6 +125,12 @@ function create () {
         frameRate: 20,
         repeat: -1
     });
+
+    this.anims.create({
+        key: "throw",
+        frames: this.anims.generateFrameNumbers('cuisine-man', {start: 8, end: 15}),
+        frameRate: 30,
+    })
 
     this.anims.create({
         key: 'knifehead-walk',
@@ -128,7 +151,7 @@ function update ()
 {
     if (gameOver) { return; }
 
-    player.update(cursors);
+    player.update(cursors, fireReady === 0);
     updateArray.forEach(enemy => enemy.update());
 }
 
@@ -147,6 +170,6 @@ function throwPlate() {
     }
 
     plate.body.setAllowGravity(false);
-    plate.setVelocityX(Math.cos(fireAngle) * 300);
-    plate.setVelocityY(Math.sin(fireAngle) * 300);
+    plate.setVelocityX(Math.cos(fireAngle) * 500);
+    plate.setVelocityY(Math.sin(fireAngle) * 500);
 }
