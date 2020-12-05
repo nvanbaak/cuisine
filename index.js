@@ -24,6 +24,9 @@ let player;
 var game = new Phaser.Game(config);
 
 class Player extends Phaser.Physics.Arcade.Sprite {
+    velocityX = 0;
+    velocityY = 0;
+
     constructor (scene, x, y)
     {
         super(scene, x, y);
@@ -37,17 +40,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         super.update();
         if (cursors.left.isDown)
         {
-            this.setVelocityX(-160);
+            this.velocityX = this.velocityX < -160 ? this.velocityX : this.velocityX - 10;
+            this.setVelocityX(this.velocityX);
             // player.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-            this.setVelocityX(160);
+            this.velocityX = this.velocityX > 160 ? this.velocityX : this.velocityX + 10;
+            this.setVelocityX(this.velocityX);
             // player.anims.play('right', true);
         }
-        else
+        else if (this.body.touching.down)
         {
-            this.setVelocityX(0);
+            this.velocityX = this.velocityX * 0.9;
+            if (Math.abs(this.velocityX) < 10) this.velocityX = 0;
+            this.setVelocityX(this.velocityX);
             // player.anims.play('turn');
         }
     
