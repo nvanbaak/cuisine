@@ -130,10 +130,6 @@ function update ()
 
     player.update(cursors);
     updateArray.forEach(enemy => enemy.update());
-
-    if (cursors.down.isDown) {
-        throwPlate();
-    }
 }
 
 function throwPlate() {
