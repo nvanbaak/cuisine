@@ -21,6 +21,7 @@ export default class KnifeheadEnemy extends Enemy {
         super.hitPlayer(player);
         player.setVelocityY(-500);
         player.iframes = 30;
+        player.hitpoints -= 10;
         this.attackSpeedBonus = Math.min(this.attackSpeedBonus + 30, 180);
     }
 
