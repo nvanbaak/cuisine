@@ -2,6 +2,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     velocityX = 0;
     velocityY = 0;
     iframes = 0;
+    hitpoints = 100;
 
     static checkIframes(player, enemy)
     {
@@ -15,6 +16,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setTexture('cuisine-man');
         this.setPosition(x, y);
     }
+
+    isAlive() { return this.hitpoints <= 0 }
 
     update (cursors, notFiring)
     {

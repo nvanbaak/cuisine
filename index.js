@@ -22,7 +22,6 @@ var config = {
     }
 };
 
-let gameOver;
 let platforms;
 let cursors;
 let player;
@@ -174,7 +173,7 @@ function create () {
 function update ()
 {
     // Game over
-    if (gameOver) { return; }
+    if ( player.isAlive() ) { return; }
 
     // Update all entities
     player.update(cursors, fireReady === 0);
