@@ -3,6 +3,7 @@ import Enemy from "./src/characters/enemy.js";
 import KnifeheadEnemy from "./src/characters/knifehead.js";
 import ThrownPlate from "./src/entities/thrownplate.js";
 import Item from "./src/entities/item.js";
+import Hotbar from "./src/hotbar.js";
 
 var config = {
     type: Phaser.AUTO,
@@ -58,6 +59,7 @@ function preload () {
     this.load.image("thrownplate","assets/plate-thrown.png");
     this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
     this.load.spritesheet('knifehead', 'assets/knifehead.png', {frameWidth: 32, frameHeight: 48});
+    this.load.spritesheet('hotbar', 'assets/hotbar.png', {frameWidth: 32, frameHeight: 64});
 }
 
 function create () {
@@ -104,6 +106,10 @@ function create () {
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
     this.player = player;
+
+    // Add hotbar
+    this.hotbar = new Hotbar(this, 800, 868);
+    this.hotbar.resize(2);
 
     // Add three enemies
     var enemy = knifeheads.create(100, 400);
@@ -168,6 +174,23 @@ function create () {
         frameRate: 20,
     });
 
+    this.anims.create({
+        key: 'hotbar-left',
+        frames: [ { key: 'hotbar', frame: 0 } ],
+        frameRate: 60,
+    })
+
+    this.anims.create({
+        key: 'hotbar-middle',
+        frames: [ { key: 'hotbar', frame: 1 } ],
+        frameRate: 60,
+    })
+
+    this.anims.create({
+        key: 'hotbar-right',
+        frames: [ { key: 'hotbar', frame: 2 } ],
+        frameRate: 60,
+    })
 }
 
 function update ()
