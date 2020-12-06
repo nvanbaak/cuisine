@@ -59,7 +59,7 @@ function preload () {
     this.load.image("thrownplate","assets/plate-thrown.png");
     this.load.spritesheet('cuisine-man', 'assets/cuisine-man.png', {frameWidth: 36, frameHeight: 48});
     this.load.spritesheet('knifehead', 'assets/knifehead.png', {frameWidth: 32, frameHeight: 48});
-    this.load.spritesheet('hotbar', 'assets/hotbar.png', {frameWidth: 24, frameHeight: 64});
+    this.load.spritesheet('hotbar', 'assets/hotbar.png', {frameWidth: 32, frameHeight: 64});
 }
 
 function create () {
@@ -108,7 +108,7 @@ function create () {
     this.player = player;
 
     // Add hotbar
-    this.hotbar = new Hotbar(this, 800, 876);
+    this.hotbar = new Hotbar(this, 800, 868);
     this.hotbar.resize(2);
 
     // Add three enemies

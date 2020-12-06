@@ -1,6 +1,7 @@
 export default class Hotbar extends Phaser.Physics.Arcade.Sprite {
 
     slots = [];
+    slotWidth = 32;
 
     constructor (scene, x, y)
     {
@@ -27,13 +28,13 @@ export default class Hotbar extends Phaser.Physics.Arcade.Sprite {
             this.slots.push(new HotbarSlot(this.scene, i));
         }
 
-        let width = (this.slots.length + 1) * 24;
+        let width = (this.slots.length + 1) * this.slotWidth;
         let furthestLeft = this.x - width / 2;
         this.leftSide.setPosition(furthestLeft, this.y);
-        this.rightSide.setPosition(furthestLeft + (this.slots.length * 24) + 24, this.y);
+        this.rightSide.setPosition(furthestLeft + (this.slots.length * this.slotWidth) + this.slotWidth, this.y);
         for (var i = 0; i < this.slots.length; i++)
         {
-            this.slots[i].setPosition(furthestLeft + (i * 24) + 24, this.y);
+            this.slots[i].setPosition(furthestLeft + (i * this.slotWidth) + this.slotWidth, this.y);
         }
     }
 }
