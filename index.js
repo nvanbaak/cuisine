@@ -2,6 +2,7 @@ import Player from "./src/characters/player.js";
 import Enemy from "./src/characters/enemy.js";
 import KnifeheadEnemy from "./src/characters/knifehead.js";
 import ThrownPlate from "./src/entities/thrownplate.js";
+import Item from "./src/entities/item.js";
 
 var config = {
     type: Phaser.AUTO,
@@ -25,10 +26,21 @@ let gameOver;
 let platforms;
 let cursors;
 let player;
+let items;
 let knifeheads;
 let thrownPlates;
 let updateArray = [];
 let fireReady = 0;
+let inventory = {
+    apple: 0,
+    egg: 0,
+    fish: 0,
+    lemon: 0,
+    lettuce: 0,
+    meat: 0,
+    plate: 0
+}
+const itemTypes = ["apple","egg","fish","lemon","lettuce","meat","plate"]
 
 var game = new Phaser.Game(config);
 
@@ -56,11 +68,11 @@ function create () {
     this.add.image(0, 0, 'sky').setScale(3).setOrigin(0,0);
 
     platforms = this.physics.add.staticGroup();
-    platforms.create(400, 950, 'platform').setScale(6).refreshBody();
+    platforms.create(400, 750, 'platform').setScale(6).refreshBody();
 
     knifeheads = this.physics.add.group(config={classType: KnifeheadEnemy});
     thrownPlates = this.physics.add.group(config={classType: ThrownPlate});
-
+    items = this.physics.add.group(config = {classType: Item});
 
     // createCursorKeys sets up up, left, right, and down
     cursors = this.input.keyboard.createCursorKeys();
@@ -89,21 +101,21 @@ function create () {
 
 
     // Add player character
-    player = new Player(this, 800, 800);
+    player = new Player(this, 800, 600);
     this.physics.add.existing(player);
     player.setCollideWorldBounds(true);
     this.player = player;
 
     // Add three enemies
-    var enemy = knifeheads.create(100, 400, 'knifehead');
+    var enemy = knifeheads.create(100, 400);
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
-    enemy = knifeheads.create(150, 400, 'knifehead');
+    enemy = knifeheads.create(150, 400);
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
-    enemy = knifeheads.create(200, 400, 'knifehead');
+    enemy = knifeheads.create(200, 400);
     enemy.setCollideWorldBounds(true);
     updateArray.push(enemy);
 
@@ -112,6 +124,11 @@ function create () {
     this.physics.add.collider(knifeheads, platforms);
     this.physics.add.overlap(player, knifeheads, Enemy.hitPlayer, Player.checkIframes);
     this.physics.add.overlap(knifeheads, thrownPlates, ThrownPlate.hitEnemy, Enemy.checkIframes);
+    this.physics.add.collider(items, platforms);
+    this.physics.add.overlap(player, items, (player, items) => {
+        items.pickup()
+    });
+
 
     // Define animations
     this.anims.create({
@@ -156,10 +173,25 @@ function create () {
 
 function update ()
 {
+    // Game over
     if (gameOver) { return; }
 
+    // Update all entities
     player.update(cursors, fireReady === 0);
     updateArray.forEach(entity => entity.update());
+
+    // Spawn items at random
+    if (Math.random() < 0.01) {
+
+        // Get random item category
+
+        items.create(
+            Phaser.Math.Between(0,1568), // anywhere in the X range
+            0,                           // top of the screen
+            itemTypes[Phaser.Math.Between(0, itemTypes.length-1)], // item category
+            inventory // pointer to inventory object
+        )
+    }
 }
 
 function throwPlate() {
